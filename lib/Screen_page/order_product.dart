@@ -1,12 +1,8 @@
 import 'package:app_purrer/Product/product_api.dart';
 import 'package:app_purrer/Screen_page/homeScreen.dart';
-import 'package:app_purrer/Screen_page/statust_order.dart';
-import 'package:app_purrer/Service/controller.dart';
 import 'package:app_purrer/Service/controller_order.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:http/http.dart';
 
 class order_product extends StatefulWidget {
   order_product({
@@ -24,30 +20,31 @@ class _order_productState extends State<order_product> {
     double screenh = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 60.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color(0xFF293275),
-          ),
-          child: TextButton(
-            onPressed: () {
-              // Get.to(home_scree());
-              controllerorder.product.clear();
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => home_scree()));
-            },
-            child: Text('Continuese',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white)),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      //   child: Container(
+      //     height: 60.0,
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.circular(10),
+      //       color: Color(0xFF293275),
+      //     ),
+      //     child: TextButton(
+      //       onPressed: () {
+      //         // Get.to(home_scree());
+      //        // controllerorder.product.clear();
+      //         Navigator.push(
+      //             context, MaterialPageRoute(builder: (_) => home_scree()));
+      //       },
+      //       child: Text('Continuese',
+      //           style: TextStyle(
+      //               fontSize: 16,
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.white)),
+      //     ),
+      //   ),
+      // ),
       appBar: AppBar(
+
         leading: IconButton(
             onPressed: () {
                 Navigator.push(
@@ -61,6 +58,15 @@ class _order_productState extends State<order_product> {
           'Order_product',
           style: TextStyle(color: Color(0xFF293275)),
         )),
+      
+        actions: [
+          IconButton(onPressed: (){
+              controllerorder.product.clear();
+          },
+           icon: Icon(Icons.delete,color: Color(0xFF293275),size: 28))
+          
+          
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -168,7 +174,7 @@ class View_Cart extends StatelessWidget {
                                     children: [
                                       SizedBox(width: 20),
                                       Text(
-                                          '${controllerorder.product.values.toList()[index].toString()}ຕຸກ',
+                                          'ຈຳນວນ    ${controllerorder.product.values.toList()[index].toString()} ລາຍການ',
                                           style: TextStyle(
                                               color: Color(0xFF293275),
                                               fontSize: 14,

@@ -39,6 +39,8 @@ class _Detail_screenState extends State<Detail_screen> {
 
   @override
   Widget build(BuildContext context) {
+     double screen = MediaQuery.of(context).size.width;
+    double screenh = MediaQuery.of(context).size.height;
     return new Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -87,28 +89,32 @@ class _Detail_screenState extends State<Detail_screen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    margin: EdgeInsets.only(bottom: 40),
+                    margin: EdgeInsets.only(bottom:60),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SingleChildScrollView(
-                            child: Container(
-                              height: 393,
-                              width: 344,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xFFE5EFF9)),
-                              child: Column(
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.all(15),
-                                      width: 200,
-                                      height: 350,
-                                      child: Image.network(
-                                        widget.image,
-                                        fit: BoxFit.fill,
-                                      )),
-                                ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Container(
+                                height: screenh*0.47,
+                                width: screen,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Color(0xFFE5EFF9)),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                     
+                                        margin: EdgeInsets.all(15),
+                                        width: screen*0.35,
+                                        height:screenh*0.43,
+                                        child: Image.network(
+                                          widget.image,
+                                          fit: BoxFit.none,
+                                        )),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -269,8 +275,7 @@ class _Detail_screenState extends State<Detail_screen> {
                                                 content: Container(
                                                   width: 250,
                                                   height: 100,
-                                                  color: Color.fromARGB(
-                                                      94, 255, 255, 255),
+                                                  color: Color.fromARGB( 94, 255, 255, 255),
                                                   child: Center(
                                                     child: Column(
                                                       children: [
@@ -284,11 +289,7 @@ class _Detail_screenState extends State<Detail_screen> {
                                                               controller.addProduct(controller
                                                                   .productList[int.parse(controller
                                                                       .productList[
-                                                                          widget
-                                                                              .index]
-                                                                      .id
-                                                                      .toString()) -
-                                                                  1]);
+                                                                          widget.index] .id.toString()) - 1]);
                                                             },
                                                             child:
                                                                 Text('ຕົກລົງ')),

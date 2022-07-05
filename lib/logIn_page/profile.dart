@@ -1,13 +1,10 @@
-import 'package:app_purrer/Screen_page/adtocarts.dart';
-import 'package:app_purrer/Screen_page/confrim_order.dart';
 import 'package:app_purrer/Screen_page/homeScreen.dart';
+import 'package:app_purrer/Screen_page/mapapi.dart';
+import 'package:app_purrer/Screen_page/order_product.dart';
 import 'package:app_purrer/logIn_page/logIn.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 class profile extends StatelessWidget {
   const profile({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     double screen;
@@ -32,15 +29,6 @@ class profile extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: Color(0xFF293275)),
           )),
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: Icon(
-          //       Icons.notification_add_outlined,
-          //       size: 30,
-          //     ),
-          //   )
-          // ],
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -78,8 +66,8 @@ class profile extends StatelessWidget {
                                                 BorderRadius.circular(35),
                                             child: Image.asset(
                                               'images/photo.jpg',
-                                              width: 90,
-                                              height: 90,
+                                              width: 100,
+                                              height: 100,
                                             )),
                                         Padding(
                                             padding: EdgeInsets.only(left: 30)),
@@ -106,8 +94,7 @@ class profile extends StatelessWidget {
                                                 icon: Icon(
                                                   Icons.edit,
                                                   color: Color(0xFF293275),
-                                                  size: 12,
-                                                ),
+                                                  size: 12),
                                                 label: Text(
                                                   'ແກ້ໄຂ',
                                                   style: TextStyle(
@@ -145,14 +132,11 @@ class profile extends StatelessWidget {
                                         child: GestureDetector(
                                           child: Image.asset('icon/R (1).jpg'),
                                           onTap: () {
-                                            MaterialPageRoute
-                                                materialPageRoute =
+                                            Navigator.push(
+                                                context,
                                                 MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        confirm_order());
-                                            Navigator.of(context)
-                                                .push(materialPageRoute);
+                                                    builder: (_) =>
+                                                       order_product()));
                                           },
                                         )),
                                     SizedBox(height: 30),
@@ -163,8 +147,6 @@ class profile extends StatelessWidget {
                                             color: Color(0xFF293275)))
                                   ],
                                 ),
-
-                                //promotion/////////
                                 Column(
                                   children: [
                                     Container(
@@ -188,9 +170,9 @@ class profile extends StatelessWidget {
                                         width: 50,
                                         child: TextButton(
                                             child:
-                                                Image.asset('icon/OIP (6).jpg'),
-                                            onPressed: () {}
-                                            //  onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(context) => Mapspage())),
+                                                Image.asset('icon/OIP (6).jpg',height: 50,width: 70,),
+                                            
+                                             onPressed: () => Navigator.push(context, MaterialPageRoute(builder:(context) =>  MapSample())),
                                             )),
                                     SizedBox(height: 30),
                                     Text('ທີ່ຢູ່ຈັດສົ່ງ',
@@ -231,13 +213,17 @@ class profile extends StatelessWidget {
                         Row(
                           children: [
                             Icon(Icons.person,
-                                size: 35, color: Color(0xFF293275)),
+                                size: 35, color: Color(0xFF293275),
+                                
+                                ),
                             SizedBox(width: 20),
                             Text('ກ່ຽວກັບ Purer',
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF293275)))
+                                    color: Color(0xFF293275))),
+                                   
+
                           ],
                         ),
                         SizedBox(height: 30),

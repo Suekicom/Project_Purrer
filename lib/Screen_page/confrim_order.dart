@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:app_purrer/Screen_page/homeScreen.dart';
+import 'package:app_purrer/Screen_page/homeScreen2.dart';
 import 'package:app_purrer/Screen_page/statust_order.dart';
 import 'package:app_purrer/Service/controller.dart';
 import 'package:app_purrer/Service/controller_buynow.dart';
 import 'package:app_purrer/Service/controller_order.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class confirm_order extends StatefulWidget {
   confirm_order({Key? key}) : super(key: key);
@@ -14,44 +18,60 @@ class confirm_order extends StatefulWidget {
 }
 
 class _confirm_orderState extends State<confirm_order> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  static final CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
   late final Controller controlle = Get.find();
   late final Controllerbuynow controllerbuynow = Get.put(Controllerbuynow());
   Controllerorder controllerorder = Get.put(Controllerorder());
   late final String name;
   late final int index;
+  String _bcel = 'Oneplay';
+  late double lat1, long1, lat2, long2, distanc;
 
   @override
   Widget build(BuildContext context) {
     double screen = MediaQuery.of(context).size.width;
     double screenh = MediaQuery.of(context).size.height;
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Color(0xFF293275),),
-          height: 60.0,
-               
-                      child: TextButton(
-                          onPressed: () {
-                            MaterialPageRoute materialPageRoute =
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        home_scree());
-                            Navigator.of(context).push(materialPageRoute);
-                          
-                            controllerorder.addProduct(
-                              controllerbuynow.product.keys.toList()[0],
-                            );
-                            controllerbuynow.clear();
-                          },
-                          child: Text('ສັ່ງຊື້',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFFFFF)))),
-          
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xFF293275),
+            ),
+            height: 60.0,
+            child: TextButton(
+                onPressed: () {
+                  MaterialPageRoute materialPageRoute = MaterialPageRoute(
+                      builder: (BuildContext context) => home_scree2());
+                  Navigator.of(context).push(materialPageRoute);
+                  
+
+                  controllerorder.addProduct(
+                    controllerbuynow.product.keys.toList()[0],
+                  );
+                   controlle.clear();
+                  controllerbuynow.clear();
+                 
+                },
+                child: Text('ສັ່ງຊື້',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFFFFFFF)))),
+          ),
         ),
-      ),
         appBar: AppBar(
           // leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
           elevation: 0,
@@ -141,14 +161,7 @@ class _confirm_orderState extends State<confirm_order> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: screen,
-                        height: screenh * 0.20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey,
-                        ),
-                      ),
+                      child: showmap(screen, screenh),
                     ),
                   ],
                 ),
@@ -188,20 +201,58 @@ class _confirm_orderState extends State<confirm_order> {
                             )),
                       ],
                     )),
-                Row(
+                Column(
                   children: [
-                    TextButton.icon(
-                        onPressed: () {},
-                        icon: Image.asset('icon/Icon ionic-md-cash@2x.png',
-                            height: 13, width: 18),
-                        label: Text('ຈ່າຍເງິນສົດ',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF293275)))),
+                    Row(
+                      children: [
+                        TextButton.icon(
+                            onPressed: () {},
+                            icon: Image.asset('icon/Icon ionic-md-cash@2x.png',
+                                height: 13, width: 18),
+                            label: Text('ຈ່າຍເງິນສົດ',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF293275)))),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        dialog(context, screen);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey),
+                        child: Row(
+                          children: [
+                            Padding(padding: EdgeInsets.only(left: 10)),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  _bcel == 'onepay'
+                                      ? 'images/onplay bcel.png'
+                                      : _bcel == 'mastercart'
+                                          ? 'images/mastercard-2.png'
+                                          : 'images/visa.png',
+                                  width: 70.0,
+                                  height: 40.0,
+                                ),
+                              ),
+                            ),
+                            Text(_bcel.toString(),
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                SizedBox(height: 190.0),
+                SizedBox(height: 80.0),
                 Column(
                   children: List.generate(
                       controllerbuynow.product.length != 0
@@ -251,19 +302,22 @@ class _confirm_orderState extends State<confirm_order> {
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.red),
                                             ),
+                                      SizedBox(width: 2),
+                                      Text('ລາຍການ')
                                     ],
                                   ),
                                 ),
                                 controllerbuynow.product.length != 0
                                     ? Text(
-                                        '${controllerbuynow.total}',
+                                        '${controllerbuynow.total} ກີບ',
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(255, 169, 10, 10)),
+                                            color: Color.fromARGB(
+                                                255, 169, 10, 10)),
                                       )
                                     : Text(
-                                        '${controlle.productList[index].price!.toInt() * int.parse(controlle.product.values.toList()[index].toString())}',
+                                        '${controlle.productList[index].price!.toInt() * int.parse(controlle.product.values.toList()[index].toString())} ກີບ',
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -303,6 +357,7 @@ class _confirm_orderState extends State<confirm_order> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Padding(padding: EdgeInsets.only(right: 20)),
                       Text("ລວມມູນຄ່າ:",
                           style: TextStyle(
                               color: Color(0xFF5D5D5D),
@@ -310,14 +365,14 @@ class _confirm_orderState extends State<confirm_order> {
                               fontWeight: FontWeight.bold)),
                       controllerbuynow.product.length != 0
                           ? Text(
-                              '${controllerbuynow.total}ກີບ',
+                              '${controllerbuynow.total} ກີບ',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF293275)),
                             )
                           : Text(
-                              '${controlle.total}ກີບ',
+                              '${controlle.total}  ກີບ',
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -326,11 +381,145 @@ class _confirm_orderState extends State<confirm_order> {
                     ],
                   ),
                 ),
-
-             
               ],
             ),
           ),
         ));
+  }
+
+  Container showmap(double screen, double screenh) {
+    return Container(
+      width: screen,
+      height: screenh * 0.20,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey,
+      ),
+      child: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+    );
+  }
+
+  Future<dynamic> dialog(BuildContext context, double screen) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Container(
+                height: 250,
+                width: screen,
+                child: Column(
+                  children: [
+                    Container(
+                        width: screen,
+                        padding: EdgeInsets.fromLTRB(2, 5, 2, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
+                        height: 70,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'images/onplay bcel.png',
+                                    width: 60,
+                                    height: 40,
+                                  )),
+                              Text('onepay',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(width: 43.0),
+                              Radio(
+                                  activeColor: Colors.lightBlue,
+                                  value: 'onepay',
+                                  groupValue: _bcel,
+                                  onChanged: (String? val) {
+                                    print(val);
+                                    setState(() {
+                                      _bcel = val!;
+                                      Navigator.pop(context);
+                                    });
+                                  })
+                            ])),
+                    SizedBox(height: 10),
+                    Container(
+                        width: screen,
+                        padding: EdgeInsets.fromLTRB(2, 5, 2, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
+                        height: 70,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'images/mastercard-2.png',
+                                    width: 70,
+                                    height: 30,
+                                  )),
+                              Text('mastercart',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(width: 43.0),
+                              Radio(
+                                  activeColor: Colors.lightBlue,
+                                  value: 'mastercart',
+                                  groupValue: _bcel,
+                                  onChanged: (String? val) {
+                                    print(val);
+                                    setState(() {
+                                      _bcel = val!;
+                                      Navigator.pop(context);
+                                    });
+                                  })
+                            ])),
+                    SizedBox(height: 10),
+                    Container(
+                        width: screen,
+                        padding: EdgeInsets.fromLTRB(2, 5, 2, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
+                        height: 70,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'images/visa.png',
+                                    width: 70,
+                                  )),
+                              Text('visa',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(width: 43.0),
+                              Radio(
+                                  activeColor: Colors.lightBlue,
+                                  value: 'visa',
+                                  groupValue: _bcel,
+                                  onChanged: (String? val) {
+                                    print(val);
+                                    setState(() {
+                                      _bcel = val!;
+                                      Navigator.pop(context);
+                                    });
+                                  })
+                            ])),
+                  ],
+                ),
+              ),
+            ));
   }
 }

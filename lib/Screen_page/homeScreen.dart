@@ -1,9 +1,9 @@
 import 'package:app_purrer/Screen_page/adtocarts.dart';
 import 'package:app_purrer/Screen_page/details_screen.dart';
+import 'package:app_purrer/Screen_page/mapapi.dart';
 import 'package:app_purrer/Screen_page/order_product.dart';
 import 'package:app_purrer/Screen_page/statust_order.dart';
 import 'package:app_purrer/Service/controller.dart';
-import 'package:app_purrer/Service/controller_order.dart';
 import 'package:app_purrer/logIn_page/logIn.dart';
 import 'package:app_purrer/logIn_page/profile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -75,7 +75,10 @@ class _home_screeState extends State<home_scree> {
               title: Text('ໂປຣໄຟຣ',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
-            ListTile(
+            ListTile(onTap: (){
+               Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => MapSample()));
+            },
                 leading: Icon(Icons.location_disabled),
                 title: Text('ທີ່ຢູ່ຈັດສົ່ງ',
                     style:
@@ -216,12 +219,15 @@ class _home_screeState extends State<home_scree> {
               ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(2, 5, 220, 0),
-                  child: Text(
-                    'ສີນຄ້າຂອງພວກເຮົາ',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF5D5D5D)),
+                  child: GestureDetector(
+                    child: Text(
+                      'ສີນຄ້າຂອງພວກເຮົາ',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF5D5D5D)),
+                    ),
+                    onTap: (){},
                   )),
               productlist(context)
             ],
@@ -249,17 +255,18 @@ Widget productlist(BuildContext context) {
         child: Obx(
           () {
             if (controller.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator());
             } else {
               return Center(
                 child: Wrap(
-                  spacing: 24,
-                  runSpacing: 15,
+                  spacing: 15,
+                  runSpacing: 20,
                   children: List.generate(
                     controller.productList.length,
                     (index) => Container(
-                      width: screenw * 0.40,
-                      height: screenh * 0.30,
+                      width: screenw * 0.45,
+                      height: screenh * 0.32,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Color(0xFFE5EFF9)),

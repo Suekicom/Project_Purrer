@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:app_purrer/Product/product_api.dart';
 import 'package:app_purrer/Screen_page/confrim_order.dart';
-import 'package:app_purrer/Screen_page/homeScreen.dart';
 import 'package:app_purrer/Service/controller.dart';
 import 'package:app_purrer/Service/controller_order.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +54,8 @@ class cartimport extends StatelessWidget {
             ]),
           ],
         ),
-        body: controller.productSubtotal.toString() == '[]'
+        body:
+         controller.productSubtotal.toString() == '[]'
             ? Center(
                 child: Container(
                     child: Image.asset('images/Cart_import.jpeg',
@@ -267,6 +265,8 @@ class View_Cart extends StatelessWidget {
                                   SizedBox(height: 2),
                                   Row(
                                     children: [
+                                      Text('ເພີ່ມລາຍການ'),
+                                       SizedBox(width: 5),
                                       Container(
                                         width: 26.0,
                                         height: 26.0,
@@ -287,7 +287,7 @@ class View_Cart extends StatelessWidget {
                                             )),
                                       ),
                                       SizedBox(width: 20),
-                                      Text('${quantity}ຕຸກ',
+                                      Text('${quantity}',
                                           style: TextStyle(
                                               color: Color(0xFF293275),
                                               fontSize: 14,
